@@ -6,9 +6,6 @@ const rootReducer = combineReducers({
     posts: postReducer
 });
 
-// type RootReducerType = typeof rootReducer;
-// export type RootState = ReturnType<RootReducerType>;
-
 export type RootState = ReturnType<typeof rootReducer>;
 
 export const reducer = (state, action) => {

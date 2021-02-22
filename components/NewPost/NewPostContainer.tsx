@@ -1,6 +1,7 @@
 import { postsAPI } from '../../api/api';
 import { useState } from 'react';
 import NewPost from './NewPost';
+import React from 'react';
 
 const NewPostContainer = () => {
     let [title, setTitle] = useState<string>();

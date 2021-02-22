@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import { postsAPI } from '../api/api';
 import PostsContainer from '../components/Posts/PostsContainer';
+import React from 'react';
 
 function Home() {
   return (
@@ -19,6 +20,6 @@ export async function getServerSideProps() {
   return {
     props: { response }
   }
-};
+}
 
 export default Home;

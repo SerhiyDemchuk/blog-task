@@ -1,12 +1,13 @@
 import { retrievePost } from '../../redux/reducers/postReducer';
 import React from 'react';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { Button, Card, CardContent, Typography, ButtonBase, Input } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import { useDispatch } from 'react-redux';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(
     createStyles({
         root: {
             height: 300,
@@ -30,13 +31,25 @@ const useStyles = makeStyles((theme: Theme) =>
             boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
             margin: 5,
         }
-    }));
+    })
+);
 
+interface PostProps {
+    title: string,
+    body: string,
+    id: number,
+    postId: number,
+    delPost: (number) => void,
+    updPost: (number) => void,
+    addPost: (number) => void,
+    setNewText: (string) => void,
+    setNewTitle: (string) => void,
+}
 
-const Post = ({ title, body, id, ...props }) => {
+const Post: React.FC<PostProps> = ({ title, body, id, postId, ...props }): React.ReactElement => {
     const dispatch = useDispatch();
     const classes = useStyles();
-
+    
     return (
         <div>
             <Link href={{
@@ -66,7 +79,7 @@ const Post = ({ title, body, id, ...props }) => {
                                 <Button className={classes.button} onClick={() => props.updPost(id)}>Update</Button>
                             </div>
                         </Card>
-                        {props.postId === id ? (
+                        {postId === id ? (
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6">
@@ -87,6 +100,18 @@ const Post = ({ title, body, id, ...props }) => {
             </Link>
         </div>
     )
+}
+
+Post.propTypes = {
+    title: PropTypes.string,
+    body: PropTypes.string,
+    id: PropTypes.number,
+    postId: PropTypes.number,
+    delPost: PropTypes.func,
+    updPost: PropTypes.func,
+    addPost: PropTypes.func,
+    setNewText: PropTypes.func,
+    setNewTitle: PropTypes.func,
 }
 
 export default Post;

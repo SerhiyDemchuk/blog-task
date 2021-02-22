@@ -1,9 +1,10 @@
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { Card, CardContent, Input, Typography, Button } from '@material-ui/core';
 import React from 'react'
 import Comments from './Comments';
+import PropTypes from 'prop-types';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(
     createStyles({
         root: {
             height: 300,
@@ -32,9 +33,23 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             justifyContent: 'space-between'
         },
-    }));
+    })
+);
 
-const DynamicPage = ({ title, body, comments, ...props }) => {
+type CommentsType = {
+    id: number,
+    postId: string,
+    body: string
+}
+interface DynamicPageProps {
+    title: string,
+    body: string,
+    comments: Array<CommentsType>,
+    setComment: (string) => void,
+    addComment: () => void,
+}
+
+const DynamicPage: React.FC<DynamicPageProps> = ({ title, body, comments, ...props }) => {
     const classes = useStyles();
     return (
         <div>
@@ -71,6 +86,14 @@ const DynamicPage = ({ title, body, comments, ...props }) => {
             </Card>
         </div >
     )
+}
+
+DynamicPage.propTypes = {
+    title: PropTypes.string,
+    body: PropTypes.string,
+    comments: PropTypes.array,
+    setComment: PropTypes.func,
+    addComment: PropTypes.func
 }
 
 export default DynamicPage;

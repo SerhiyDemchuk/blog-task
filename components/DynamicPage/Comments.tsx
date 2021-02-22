@@ -1,7 +1,13 @@
 import { CardContent, Typography } from '@material-ui/core';
-import React from 'react'
+import React from 'react';
+import PropTypes from 'prop-types';
 
-const Comments = ({ id, body }) => {
+interface CommentsProps {
+    id: number,
+    body: string
+}
+
+const Comments: React.FC<CommentsProps> = ({ id, body }) => {
     return (
         <div>
             <CardContent>
@@ -14,6 +20,11 @@ const Comments = ({ id, body }) => {
             </CardContent>
         </div >
     )
+}
+
+Comments.propTypes = {
+    id: PropTypes.number,
+    body: PropTypes.string   
 }
 
 export default Comments;

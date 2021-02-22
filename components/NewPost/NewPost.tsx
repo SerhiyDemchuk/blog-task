@@ -1,7 +1,9 @@
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import { Button, Card, CardContent, Input, Typography } from '@material-ui/core';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(
     createStyles({
         root: {
             width: 700,
@@ -24,29 +26,36 @@ const useStyles = makeStyles((theme: Theme) =>
             boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
             margin: 5,
         },
-    }));
+    })
+);
 
-const NewPost = ({ addPost, setTitle, setText }) => {
+interface NewPostProps {
+    addPost: () => void,
+    setText: (string) => void,
+    setTitle: (string) => void,
+}
+
+const NewPost: React.FC<NewPostProps> = ({ addPost, setTitle, setText }) => {
     const classes = useStyles();
-
+    
     return (
         <div>
             <Card className={classes.root}>
                 <CardContent className={classes.card}>
                     <div>
-                    <Typography variant="h2">
-                        Create new post
+                        <Typography variant="h2">
+                            Create new post
                                 </Typography>
                     </div>
                     <div>
-                    <Typography variant="h6">
-                        Type title
+                        <Typography variant="h6">
+                            Type title
                                 </Typography>
-                    <Input onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)} placeholder="title" />
-                    <Typography variant="h6">
-                        Type text
+                        <Input onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)} placeholder="title" />
+                        <Typography variant="h6">
+                            Type text
                                 </Typography>
-                    <Input onChange={(e: React.ChangeEvent<HTMLInputElement>) => setText(e.target.value)} placeholder="text" />
+                        <Input onChange={(e: React.ChangeEvent<HTMLInputElement>) => setText(e.target.value)} placeholder="text" />
                     </div>
                 </CardContent>
                 <Button className={classes.button} variant="text" color="default" onClick={() => addPost()}>Add</Button>
@@ -54,5 +63,12 @@ const NewPost = ({ addPost, setTitle, setText }) => {
         </div>
     )
 }
+
+NewPost.propTypes = {
+    addPost: PropTypes.func,
+    setText: PropTypes.func,
+    setTitle: PropTypes.func,
+}
+
 
 export default NewPost;
