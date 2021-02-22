@@ -18,11 +18,19 @@ export const postsAPI = {
                 return response.data;
             })
     },
-    createPost() {
-        return instance.post(`posts`)
+    createPost(title: string | number, body: string | number, id: number) {
+        return instance.post(`posts`, {
+            title: title,
+            body: body,
+            id: id
+        })
     },
-    updatePost(id: number) {
-        return instance.put(`posts/${id}`)
+    updatePost(id: number, title: number | string, body: number | string) {
+        return instance.put(`posts/${id}`, {
+            title: title,
+            body: body,
+            id: id
+        })
     },
     deletePost(id: number) {
         return instance.delete(`posts/${id}`)
@@ -33,10 +41,11 @@ export const postsAPI = {
 }
 
 export const commentsAPI = {
-    createComment() {
-        return instance.post(`comments`)
-            .then(response => {
-                return response.data;
-            })
+    createComment(postId: string | number, body: string | number, id: number) {
+        return instance.post(`comments`, {
+            postId: postId,
+            body: body,
+            id: id
+        })
     }
 }

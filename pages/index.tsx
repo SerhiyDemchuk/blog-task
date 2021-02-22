@@ -1,22 +1,24 @@
 import Head from 'next/head';
-import Header from '../components/Header';
+import { postsAPI } from '../api/api';
 import PostsContainer from '../components/Posts/PostsContainer';
-import styles from '../styles/Home.module.css';
-import Link from 'next/link';
 
-export default function Home() {
+function Home() {
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <Header />
       <PostsContainer />
-      <Link href="/posts/[id]">
-        <a>Hello</a>
-      </Link>
     </div>
   )
 }
+
+export async function getServerSideProps() {
+  const response = await postsAPI.listPosts();
+  return {
+    props: { response }
+  }
+};
+
+export default Home;

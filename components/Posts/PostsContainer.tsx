@@ -1,28 +1,66 @@
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { loadData } from "../../redux/reducers/postReducer";
 import { RootState } from '../../redux/reducers';
-import { NextThunkDispatch, wrapper } from "../../redux";
 import Post from "./Post";
+import { postsAPI } from "../../api/api";
 
-export default function PostsContainer () {
+function PostsContainer() {
+
     const dispatch = useDispatch();
-    const { postsData } = useSelector((state: RootState) => state.posts);
-    console.log(postsData);
-    
+    const { allPostsData } = useSelector((state: RootState) => state.posts);
+
+    let [postId, setPostId] = useState<number>();
+    let [newTitle, setNewTitle] = useState<string>();
+    let [newText, setNewText] = useState<string>();
+
+    const delPost = async (id: number) => {
+        try {
+            const response = await postsAPI.deletePost(id);
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const updPost = async (id: number) => {
+        setPostId(id);
+    }
+
+    const addPost = async (id: number) => {
+        try {
+            const response = await postsAPI.updatePost(id, newTitle, newText);
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     useEffect(() => {
         dispatch(loadData());
     }, []);
-    
+
     return (
         <div>
-            <h1>Hello</h1>
-            <Post postsData={postsData} />
+            {
+                allPostsData.map(post => (
+                    <div key={post.id}>
+                        <Post
+                            postId={postId}
+                            setNewTitle={setNewTitle}
+                            setNewText={setNewText}
+                            addPost={addPost}
+                            updPost={updPost}
+                            delPost={delPost}
+                            title={post.title}
+                            body={post.body}
+                            id={post.id}
+                        />
+                    </div>
+                ))
+            }
         </div>
     );
 }
 
-export const getServerSideProps = wrapper.getServerSideProps(async({store}) => {
-    const dispatch = store.dispatch as NextThunkDispatch;
-    await dispatch(loadData());
-})
+export default PostsContainer;

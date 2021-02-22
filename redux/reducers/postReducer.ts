@@ -1,30 +1,40 @@
 import { postsAPI } from "../../api/api";
 
+export type CommentType = {
+    title: string,
+    body: string,
+    id: number
+    comments: [
+        id: number,
+        postId: number,
+        body: string
+    ]
+}
+
 export type PostType = {
     title: string,
     body: string,
-    id: string | number
+    id: number
 }
 
 let initialState = {
-    postsData: [] as Array<PostType> | null,
+    allPostsData: [] as Array<PostType> | null,
+    onePostData: [] as Array<CommentType> | null,
 }
 
 type InitialStateType = typeof initialState;
 
 enum PostActionType {
     LIST_POST = 'LIST_POST',
-    RETRIEVE_POST = 'RETRIEVE_POST',
-    CREATE_POST = 'CREATE_POST',
-    UPDATE_POST = 'UPDATE_POST',
-    DELETE_POST = 'DELETE_POST',
-    CREATE_COMMENT = 'CREATE_COMMENT'
+    RETRIEVE_POST = 'RETRIEVE_POST'
 }
 
 const postReducer = (state = initialState, action: ActionTypes): InitialStateType => {
     switch (action.type) {
         case PostActionType.LIST_POST:
-            return { ...state, postsData: action.data }
+            return { ...state, allPostsData: action.data }
+        case PostActionType.RETRIEVE_POST:
+            return { ...state, onePostData: action.data }
         default:
             return state;
     }
@@ -34,8 +44,13 @@ type LoadDataType = {
     type: PostActionType.LIST_POST,
     data: Array<PostType>
 }
-
 const loadDataAction = (data: Array<PostType>): LoadDataType => ({ type: PostActionType.LIST_POST, data });
+
+type RetrievePostType = {
+    type: PostActionType.RETRIEVE_POST,
+    data: Array<CommentType>
+}
+const retrievePostAction = (data: Array<CommentType>): RetrievePostType => ({ type: PostActionType.RETRIEVE_POST, data });
 
 export const loadData = () => {
     return async function(dispatch: any) {
@@ -44,6 +59,13 @@ export const loadData = () => {
     }
 }
 
-type ActionTypes = LoadDataType;
+export const retrievePost = (id: number) => {
+    return async function(dispatch: any) {
+        const response = await postsAPI.retrievePost(id);
+        dispatch(retrievePostAction(response));
+    }
+}
+
+type ActionTypes = LoadDataType | RetrievePostType;
 
 export default postReducer;

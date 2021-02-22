@@ -1,5 +1,5 @@
 import { AnyAction, applyMiddleware, createStore } from "redux";
-import thunk, { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import thunk, { ThunkDispatch } from 'redux-thunk';
 import { Context, createWrapper, MakeStore } from "next-redux-wrapper";
 import { reducer, RootState } from "./reducers";
 
